@@ -10,6 +10,18 @@ app.use(express.json())
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
+// randomjoke to get a random joke from https://api.chucknorris.io/jokes/random
+app.get('/randomjoke', async (req, res) => {
+    try {
+        const response = await fetch('https://api.chucknorris.io/jokes/random');
+        const data = await response.json();
+        res.json({ joke: data }); // data.value
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch joke' });
+    }
+});
+
 app.post('/ai/chatgemini', async (req, res) => {
     try {
         const { message } = req.body;
@@ -67,17 +79,7 @@ app.post('/ai/chatopenai', async (req, res) => {
     }
 });
 
-// /randomjoke to get a random joke from https://api.chucknorris.io/jokes/random
-app.get('/randomjoke', async (req, res) => {
-    try {
-        const response = await fetch('https://api.chucknorris.io/jokes/random');
-        const data = await response.json();
-        res.json({ joke: data }); // data.value
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to fetch joke' });
-    }
-});
+
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log('Server running on port', port));
