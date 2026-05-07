@@ -15,7 +15,7 @@ app.get('/randomjoke', async (req, res) => {
     try {
         const response = await fetch('https://api.chucknorris.io/jokes/random');
         const data = await response.json();
-        res.json({ joke: data }); // data.value
+        res.json({ joke: data.value });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch joke' });
